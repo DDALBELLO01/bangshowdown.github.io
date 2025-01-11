@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Counter App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #1a1a1a;
+    }
+  </style>
+</head>
+<body class="text-white font-sans">
+
+  <!-- Header -->
+  <header class="flex items-center justify-center p-4 bg-gray-900">
+    <h1 class="text-xl">BANG! Showdown</h1>
+  </header>
+
+  <!-- Counters -->
+  <main class="space-y-6 p-4">
+    <!-- Counter 1 -->
+    <div class="text-center">
+      <p class="text-lg mb-2">Pressione</p>
+      <div class="flex items-center justify-center space-x-4">
+        <button id="pressure-decrease" class="w-12 h-12 bg-green-600 rounded-full text-2xl font-bold hover:bg-green-700" aria-label="Decrease Pressure">-</button>
+        <p id="pressure-value" class="text-3xl">0</p>
+        <button id="pressure-increase" class="w-12 h-12 bg-green-600 rounded-full text-2xl font-bold hover:bg-green-700" aria-label="Increase Pressure">+</button>
+      </div>
+    </div>
+
+    <!-- Counter 2 -->
+    <div class="text-center">
+      <p class="text-lg mb-2">Pallottole</p>
+      <div class="flex items-center justify-center space-x-4">
+        <button id="bullets-decrease" class="w-12 h-12 bg-gray-600 rounded-full text-2xl font-bold hover:bg-gray-700" aria-label="Decrease Bullets">-</button>
+        <p id="bullets-value" class="text-3xl">0</p>
+        <button id="bullets-increase" class="w-12 h-12 bg-gray-600 rounded-full text-2xl font-bold hover:bg-gray-700" aria-label="Increase Bullets">+</button>
+      </div>
+    </div>
+
+    <!-- Counter 3 -->
+    <div class="text-center">
+      <p class="text-lg mb-2">Turno</p>
+      <div class="flex items-center justify-center space-x-4">
+        <button id="turn-decrease" class="w-12 h-12 bg-yellow-600 rounded-full text-2xl font-bold hover:bg-yellow-700" aria-label="Decrease Turn">-</button>
+        <p id="turn-value" class="text-3xl">0</p>
+        <button id="turn-increase" class="w-12 h-12 bg-yellow-600 rounded-full text-2xl font-bold hover:bg-yellow-700" aria-label="Increase Turn">+</button>
+      </div>
+    </div>
+
+    <!-- Mezzogiorno di Fuoco Label -->
+    <div id="mezzogiorno-label" class="text-center text-2xl text-red-500 mt-6 hidden">
+      <p>Mezzogiorno di fuoco attivo</p>
+    </div>
+
+    <!-- Iniziativa Flag -->
+    <div class="text-center">
+      <button id="iniziativa-toggle" class="mt-6 w-32 py-2 bg-red-600 text-xl rounded-full text-white font-bold hover:bg-red-700" aria-label="Toggle Iniziativa Flag">Iniziativa</button>
+    </div>
+
+    <!-- Pressure Alert Message -->
+    <div id="pressure-alert" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+      <div class="bg-gray-800 p-6 rounded-lg text-white text-center">
+        <p>Il tuo sceriffo è al massimo della pressione, perde una vita.</p>
+        <button id="ok-button" class="mt-4 px-6 py-2 bg-blue-600 rounded-full text-white font-bold hover:bg-blue-700">OK</button>
+      </div>
+    </div>
+
+    <!-- Turno Actions Alert -->
+    <div id="turn-actions-alert" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+      <div class="bg-gray-800 p-6 rounded-lg text-white text-center">
+        <p>Ricordati di effettuare queste azioni:</p>
+        <ul class="mt-4 text-left">
+          <li>-(Riposo) Tutti i Personaggi vengono riposati, cioè STAPpati</li>
+          <li>-(Alba) Eventuali effetti in questa fase</li>
+          <li>-(Pesca) Ogni giocatore pesca 1 carta</li>
+        </ul>
+        <button id="turn-ok-button" class="mt-4 px-6 py-2 bg-blue-600 rounded-full text-white font-bold hover:bg-blue-700">OK</button>
+      </div>
+    </div>
+
+    <!-- Abilita Suggerimenti Flag -->
+    <div class="text-center mt-6">
+      <button id="abilita-suggerimenti" class="w-48 py-2 bg-purple-600 text-xl rounded-full text-white font-bold hover:bg-purple-700" aria-label="Toggle Suggerimenti Flag">Abilita Suggerimenti</button>
+    </div>
+
+  </main>
+
+  <!-- JavaScript -->
+  <script>
+    let pressureValue = 0;
+    let bulletsValue = 0;
+    let turnValue = 0;
+    let iniziativaFlag = false; // Iniziativa flag
+    let suggerimentiFlag = false; // Suggerimenti flag
+
+    // Pressione Counter
+    const pressureDecrease = document.getElementById('pressure-decrease');
+    const pressureIncrease = document.getElementById('pressure-increase');
+    const pressureDisplay = document.getElementById('pressure-value');
+    const pressureAlert = document.getElementById('pressure-alert');
+    const okButton = document.getElementById('ok-button');
+
+    pressureDecrease.addEventListener('click', () => {
+      pressureValue = Math.max(0, pressureValue - 1);
+      pressureDisplay.textContent = pressureValue;
+    });
+
+    pressureIncrease.addEventListener('click', () => {
+      pressureValue = (pressureValue + 1) % 7; // Reset to 0 if greater than 6
+      pressureDisplay.textContent = pressureValue;
+
+      if (pressureValue === 6) {
+        // Show alert and reset pressure value
+        pressureAlert.classList.remove('hidden');
+        pressureValue = 0;
+        pressureDisplay.textContent = pressureValue;
+      }
+    });
+
+    // Handle OK button click to close the pressure alert
+    okButton.addEventListener('click', () => {
+      pressureAlert.classList.add('hidden');
+    });
+
+    // Pallottole Counter
+    const bulletsDecrease = document.getElementById('bullets-decrease');
+    const bulletsIncrease = document.getElementById('bullets-increase');
+    const bulletsDisplay = document.getElementById('bullets-value');
+
+    bulletsDecrease.addEventListener('click', () => {
+      bulletsValue = Math.max(0, bulletsValue - 1);
+      bulletsDisplay.textContent = bulletsValue;
+    });
+
+    bulletsIncrease.addEventListener('click', () => {
+      if (bulletsValue < 6) {
+        bulletsValue += 1;
+      }
+      bulletsDisplay.textContent = bulletsValue;
+    });
+
+    // Turno Counter
+    const turnDecrease = document.getElementById('turn-decrease');
+    const turnIncrease = document.getElementById('turn-increase');
+    const turnDisplay = document.getElementById('turn-value');
+    const mezzogiornoLabel = document.getElementById('mezzogiorno-label');
+    const turnActionsAlert = document.getElementById('turn-actions-alert');
+    const turnOkButton = document.getElementById('turn-ok-button');
+
+    turnDecrease.addEventListener('click', () => {
+      turnValue = Math.max(0, turnValue - 1);
+      turnDisplay.textContent = turnValue;
+      updateMezzogiornoLabel();
+      updateTurnColor();
+    });
+
+    turnIncrease.addEventListener('click', () => {
+      turnValue += 1;
+
+      if (turnValue >= 6) {
+        bulletsValue = 6; // Set bullets to max if turn is 6 or more
+      } else {
+        bulletsValue = turnValue; // Set bullets equal to turn
+      }
+
+      turnDisplay.textContent = turnValue;
+      bulletsDisplay.textContent = bulletsValue;
+      updateMezzogiornoLabel();
+      updateTurnColor();
+
+      // Show Turn Actions Alert if suggestions are enabled
+      if (suggerimentiFlag) {
+        turnActionsAlert.classList.remove('hidden');
+      }
+    });
+
+    // Handle OK button click to close the Turn Actions alert
+    turnOkButton.addEventListener('click', () => {
+      turnActionsAlert.classList.add('hidden');
+    });
+
+    // Iniziativa Flag Toggle
+    const iniziativaToggle = document.getElementById('iniziativa-toggle');
+
+    iniziativaToggle.addEventListener('click', () => {
+      iniziativaFlag = !iniziativaFlag;
+      if (iniziativaFlag) {
+        iniziativaToggle.classList.replace('bg-red-600', 'bg-green-600');
+        iniziativaToggle.classList.replace('hover:bg-red-700', 'hover:bg-green-700');
+      } else {
+        iniziativaToggle.classList.replace('bg-green-600', 'bg-red-600');
+        iniziativaToggle.classList.replace('hover:bg-green-700', 'hover:bg-red-700');
+      }
+    });
+
+    // Function to show/hide Mezzogiorno di Fuoco label
+    function updateMezzogiornoLabel() {
+      if (turnValue >= 7) {
+        mezzogiornoLabel.classList.remove('hidden');
+      } else {
+        mezzogiornoLabel.classList.add('hidden');
+      }
+    }
+
+    // Function to change turn color when "Mezzogiorno di fuoco" is active
+    function updateTurnColor() {
+      if (turnValue >= 7) {
+        turnDisplay.classList.add('text-red-600');
+        turnDisplay.classList.remove('text-3xl');
+      } else {
+        turnDisplay.classList.remove('text-red-600');
+        turnDisplay.classList.add('text-3xl');
+      }
+    }
+
+    // Abilita Suggerimenti Flag Toggle
+    const abilitaSuggerimenti = document.getElementById('abilita-suggerimenti');
+
+    abilitaSuggerimenti.addEventListener('click', () => {
+      suggerimentiFlag = !suggerimentiFlag;
+      if (suggerimentiFlag) {
+        abilitaSuggerimenti.classList.replace('bg-purple-600', 'bg-green-600');
+        abilitaSuggerimenti.classList.replace('hover:bg-purple-700', 'hover:bg-green-700');
+      } else {
+        abilitaSuggerimenti.classList.replace('bg-green-600', 'bg-purple-600');
+        abilitaSuggerimenti.classList.replace('hover:bg-green-700', 'hover:bg-purple-700');
+      }
+    });
+  </script>
+</body>
+</html>
