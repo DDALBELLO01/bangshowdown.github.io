@@ -13,10 +13,30 @@
 </head>
 <body class="text-white font-sans">
 
-  <!-- Header -->
-  <header class="flex items-center justify-center p-4 bg-gray-900">
+<!-- Header -->
+<header class="flex items-center justify-between p-4 bg-gray-900 relative">
+  <!-- Title centered with absolute positioning -->
+  <div class="absolute inset-x-0 text-center">
     <h1 class="text-xl">BANG! Showdown</h1>
-  </header>
+  </div>
+  
+  <!-- Buttons aligned to the right -->
+  <div class="flex space-x-2 ml-auto">
+    <button onclick="window.location.href='legenda.html'" class="text-white bg-gray-700 hover:bg-gray-800 p-2 rounded-full">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+        <path d="M0 0h24v24H0z" fill="none"/>
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+      </svg>
+    </button>
+    <button onclick="window.location.href='turn.html'" class="text-white bg-gray-700 hover:bg-gray-800 p-2 rounded-full">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+        <path d="M0 0h24v24H0z" fill="none"/>
+        <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+      </svg>
+    </button>
+  </div>
+</header>
+  
 
   <!-- Counters -->
   <main class="space-y-6 p-4">
@@ -81,9 +101,10 @@
       </div>
     </div>
 
-    <!-- Abilita Suggerimenti Flag -->
+    <!-- Abilita Suggerimenti Checkbox -->
     <div class="text-center mt-6">
-      <button id="abilita-suggerimenti" class="w-48 py-2 bg-purple-600 text-xl rounded-full text-white font-bold hover:bg-purple-700" aria-label="Toggle Suggerimenti Flag">Abilita Suggerimenti</button>
+      <label for="abilita-suggerimenti-checkbox" class="text-lg font-semibold">Abilita Suggerimenti</label>
+      <input type="checkbox" id="abilita-suggerimenti-checkbox" class="ml-4" aria-label="Enable Suggerimenti" />
     </div>
 
   </main>
@@ -95,6 +116,7 @@
     let turnValue = 0;
     let iniziativaFlag = false; // Iniziativa flag
     let suggerimentiFlag = false; // Suggerimenti flag
+    let mezzogiornoDiFuoco = false; // Mezzogiorno di fuoco flag
 
     // Pressione Counter
     const pressureDecrease = document.getElementById('pressure-decrease');
@@ -154,11 +176,27 @@
       turnValue = Math.max(0, turnValue - 1);
       turnDisplay.textContent = turnValue;
       updateMezzogiornoLabel();
-      updateTurnColor();
     });
 
     turnIncrease.addEventListener('click', () => {
       turnValue += 1;
+
+      if (turnValue >= 7) {
+        mezzogiornoDiFuoco = true;  // Mezzogiorno di Fuoco is active when Turno is 7 or more
+      } else {
+        mezzogiornoDiFuoco = false;
+      }
+
+      if (mezzogiornoDiFuoco) {
+        pressureValue = Math.min(pressureValue + 1, 6); // Increase pressure when Mezzogiorno di Fuoco is on
+        pressureDisplay.textContent = pressureValue;
+        if (pressureValue === 6) {
+          // Show alert and reset pressure value
+          pressureAlert.classList.remove('hidden');
+          pressureValue = 0;
+          pressureDisplay.textContent = pressureValue;
+        }
+      }
 
       if (turnValue >= 6) {
         bulletsValue = 6; // Set bullets to max if turn is 6 or more
@@ -169,7 +207,6 @@
       turnDisplay.textContent = turnValue;
       bulletsDisplay.textContent = bulletsValue;
       updateMezzogiornoLabel();
-      updateTurnColor();
 
       // Show Turn Actions Alert if suggestions are enabled
       if (suggerimentiFlag) {
@@ -198,37 +235,13 @@
 
     // Function to show/hide Mezzogiorno di Fuoco label
     function updateMezzogiornoLabel() {
-      if (turnValue >= 7) {
+      if (mezzogiornoDiFuoco) {
         mezzogiornoLabel.classList.remove('hidden');
       } else {
         mezzogiornoLabel.classList.add('hidden');
       }
     }
 
-    // Function to change turn color when "Mezzogiorno di fuoco" is active
-    function updateTurnColor() {
-      if (turnValue >= 7) {
-        turnDisplay.classList.add('text-red-600');
-        turnDisplay.classList.remove('text-3xl');
-      } else {
-        turnDisplay.classList.remove('text-red-600');
-        turnDisplay.classList.add('text-3xl');
-      }
-    }
-
-    // Abilita Suggerimenti Flag Toggle
-    const abilitaSuggerimenti = document.getElementById('abilita-suggerimenti');
-
-    abilitaSuggerimenti.addEventListener('click', () => {
-      suggerimentiFlag = !suggerimentiFlag;
-      if (suggerimentiFlag) {
-        abilitaSuggerimenti.classList.replace('bg-purple-600', 'bg-green-600');
-        abilitaSuggerimenti.classList.replace('hover:bg-purple-700', 'hover:bg-green-700');
-      } else {
-        abilitaSuggerimenti.classList.replace('bg-green-600', 'bg-purple-600');
-        abilitaSuggerimenti.classList.replace('hover:bg-green-700', 'hover:bg-purple-700');
-      }
-    });
   </script>
 </body>
 </html>

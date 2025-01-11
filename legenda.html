@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leggenda - BANG! Showdown</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #1a1a1a;
+    }
+  </style>
+</head>
+<body class="text-white font-sans">
+
+  <!-- Header -->
+  <header class="flex items-center justify-center p-4 bg-gray-900">
+    <h1 class="text-xl">Leggenda</h1>
+  </header>
+
+  <!-- Leggenda Content -->
+  <main class="space-y-6 p-4">
+    <div class="bg-gray-800 p-6 rounded-lg text-white">
+      <p class="text-lg">
+        <strong>Accumulare:</strong> aggiungere 1 pallottola scarica.<br><br>
+
+        <strong>Alba:</strong> “nella fase di Alba” (a inizio giornata, prima di pescare)<br><br>
+
+        <strong>ARRIVO:</strong> Quando entra in gioco il giocatore sceglie se attivare l’ARRIVO (ma allora il Pard si STANCA) oppure non attivarlo, senza STANCARLO.<br><br>
+
+        <strong>Avanzare:</strong> muoversi verso la Retroguardia avversaria (se non specificato, di 1 Location). Se imposto da un’abilità o un effetto, funziona anche se è STANCO; diversamente, per muoversi non deve essere STANCO.<br><br>
+
+        <strong>BANG! extra:</strong> ha il normale effetto di un BANG!, ma non STANCA il Personaggio (e può sparare anche se è già STANCO).<br><br>
+
+        <strong>CURA:</strong> recupera 1 pv. Non si può andare oltre il massimo indicato sulla carta. Non si può curare chi è al massimo dei pv.<br><br>
+
+        <strong>ENTRATA:</strong> “quando entra in gioco”. A differenza di ARRIVO, l’effetto è obbligatorio.<br><br>
+
+        <strong>FERISCI:</strong> togli 1 pv al personaggio. Non si attiva se perde uno o più pv per altre cause. FERISCILO = ferisci questo personaggio. Si può togliere l’ultimo pv, mettendolo KO: in quel caso però si attiva per un’ultima volta la sua abilità..<br><br>
+
+        <strong>Furia [Berserk]:</strong> finché è Ferito, acquisisce l’abilità specificata.<br><br>
+
+        <strong>Gruppo:</strong> ci possono essere più copie di questo Personaggio contemporaneamente in gioco.<br><br>
+
+        <strong>Implacabile:</strong> non subisce il colpo di risposta ai BANG! (ogni Sceriffo ha questa abilità in automatico).<br><br>
+
+        <strong>Indietreggiare:</strong> muoversi verso la propria Retroguardia (se non specificato, di 1 Location). Non fa STANCARE. Se imposto da un’abilità o un effetto, funziona anche se è STANCO; diversamente, per muoversi non deve essere STANCO.<br><br>
+
+        <strong>KO:</strong> “quando finisce KO…”<br><br>
+
+        <strong>Mancato:</strong> annulla un BANG! (diretto, o di risposta). Non si può attivare un effetto di Mancato se non c’è un BANG! da annullare. Nel caso di Equipaggiamenti (es. Cappello), il BANG! deve essere rivolto verso lo stesso possessore dell’Equipaggiamento con il Mancato.<br><br>
+
+        <strong>Pard:</strong> qualunque Personaggio che non sia Sceriffo.<br><br>
+
+        <strong>Personaggio:</strong> un qualunque protagonista, Pard o Sceriffo.<br><br>
+
+        <strong>Precisione:</strong> i BANG! ignorano VICE e PROVOCAZIONE.<br><br>
+
+        <strong>Pronto:</strong> quando entra in gioco dalla mano, non è mai STANCO (neanche se l’altro giocatore ha già passato).<br><br>
+
+        <strong>Provocazione:</strong> non si possono sparare BANG! ad altri Pard senza Provocazione nella sua stessa Location.<br><br>
+
+        <strong>Rapidità:</strong> quando spara un Bang!, subisce l’eventuale colpo di risposta solo se l’altro non va KO con quel colpo.<br><br>
+
+        <strong>Ricarica:</strong> metti una tua pallottola nel caricatore dal lato “usato” a quello “non usato”.<br><br>
+
+        <strong>RICERCA:</strong> cerca nel mazzo una carta del tipo indicato e aggiungila alla tua mano, poi rimescola il mazzo.<br><br>
+
+        <strong>Rivela:</strong> metti la prima carta del tuo mazzo negli scarti, poi confrontala con quanto specificato (es. “se è della classe dello Sceriffo…”).<br><br>
+
+        <strong>Rinforzo:</strong> può entrare in gioco in una qualunque Location dove ci sia già un altro proprio Personaggio.<br><br>
+
+        <strong>RIPOSA:</strong> “STAPpa un Personaggio”. RIPOSALO = STAPpa questo personaggio.<br><br>
+
+        <strong>RITIRA:</strong> il proprietario riprende in mano la carta indicata (eventuali Equipaggiamenti vanno scartati).<br><br>
+
+        <strong>SCARICA:</strong> “consuma n pallottole dal caricatore”, come se fossero state usate.<br><br>
+
+        <strong>SCAVA:</strong> “SCAVA n carte” = “metti le prime n carte del mazzo avversario negli scarti”; “SCAVA n tue carte” = “metti le prime n carte del tuo mazzo negli scarti”.<br><br>
+
+        <strong>SCHIERA:</strong> metti in gioco un Pard dalla mano (pagando il suo costo). Se l’avversario ha l’Iniziativa, entra in gioco STANCO. Il Pard schierato attiva a sua volta tutte le sue eventuali abilità SCHIERA, ARRIVO o ENTRATA.<br><br>
+
+        <strong>Scout:</strong> può entrare in gioco in qualunque Location non occupata da Personaggi avversari, anche oltre il proprio Sceriffo (ma non oltre quello dell’avversario).<br><br>
+
+        <strong>Sfinimento:</strong> quando si dovrebbe pescare una carta dal proprio mazzo, ma è esaurito. Lo Sceriffo subisce il danno da Sfinimento, cioè pesca una sua Prodezza (perdendo quindi 1 pv) prima di rimescolare il mazzo.<br><br>
+
+        <strong>Spara un BANG!:</strong> il Personaggio non deve essere STANCO. Quando spara diventa STANCO. Se però il BANG! è extra, allora tutto questo non si applica.<br><br>
+
+        <strong>Spostare:</strong> far avanzare o indietreggiare di una Location, se possibile.<br><br>
+
+        <strong>STANCA:</strong> “TAPpare” un Personaggio; non può STANCARSI finché non RIPOSA (e quindi non può sparare BANG! non extra o muoversi); STANCALO = stanca questo personaggio.<br><br>
+
+        <strong>Tramonto:</strong> “nella fase del Tramonto” (a fine giornata).<br><br>
+
+        <strong>USATO:</strong> su un Equipaggiamento, quando lascia il gioco nel proprio turno (per es. un’Arma ad Azione Singola dopo aver sparato un BANG!). Non funziona se viene scartato nel turno dell’avversario (per es. tramite Cat Balou).<br><br>
+
+        <strong>Vice:</strong> un Vice protegge lo Sceriffo se si trova nella stessa Location, nel senso che lo Sceriffo non può essere bersagliato da BANG!<br><br>
+
+        <strong>Vicino:</strong> in una Location adiacente, cioè o quella immediatamente successiva o precedente o la stessa in cui si trova il Personaggio.<br><br>
+      </p>
+    </div>
+
+    <!-- Back to Main Page -->
+    <div class="text-center mt-6">
+        <a href="index.html" class="w-32 py-3 px-6 bg-blue-600 text-xl rounded-full text-white font-bold hover:bg-blue-700 hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+          Indietro
+        </a>
+      </div>
+
+  </main>
+
+</body>
+</html>
