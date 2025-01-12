@@ -20,7 +20,7 @@
     <h1 class="text-xl">BANG! Showdown</h1>
   </div>
   <button id="reset-button" class="text-white bg-gray-700 hover:bg-gray-800 p-3 rounded-full">
-    <svg xmlns="http://www.w3.org/2000/svg" class="reset-icon" height="24" viewBox="0 0 24 24" width="24" onclick="resetFunction()">
+    <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 0 24 24" width="32" onclick="resetFunction()">
       <path d="M0 0h24v24H0z" fill="none"/>
       <path d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"/>
     </svg>
@@ -92,7 +92,13 @@
     <!-- Turno Actions Alert -->
     <div id="turn-actions-alert" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
       <div class="bg-gray-800 p-6 rounded-lg text-white text-center">
-        <p>Ricordati di effettuare queste azioni:</p>
+        <p>A fine giornata:</p>
+        <ul class="mt-4 text-left">
+          <li>-(Tramonto) Eventuali effetti in questa fase.</li>
+          <li>-(Pressione) Il giocatore che controlla meno Location (anche se non occupate) aggiunge un segnalino Pressione al suo Sceriffo</li>
+          <li>-(Fase di scarto) Se un giocatore ha più di 6 carte, ne scarta fino ad averne 6. Non si può cambiare l’ordine degli scarti!</li>
+        </ul>
+        <p>A inizio giornata:</p>
         <ul class="mt-4 text-left">
           <li>-(Riposo) Tutti i Personaggi vengono riposati, cioè STAPpati</li>
           <li>-(Alba) Eventuali effetti in questa fase</li>
