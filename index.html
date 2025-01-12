@@ -344,6 +344,11 @@ accumuloDecrease.addEventListener('click', () => {
 accumuloIncrease.addEventListener('click', () => {
   accumuloValue += 1;
   accumuloDisplay.textContent = accumuloValue;
+  if (turnValue + accumuloValue >= 6) {
+        bulletsValue = 6; // Set bullets to max if turn is 6 or more
+      } else {
+        bulletsValue = turnValue + accumuloValue; // Set bullets equal to turn
+      }
   updateDependentValues();
 });
 
