@@ -148,8 +148,8 @@
   <!-- JavaScript -->
   <script>
     let pressureValue = 0;
-    let bulletsValue = 0;
-    let turnValue = 0;
+    let bulletsValue = 1;
+    let turnValue = 1;
     let iniziativaFlag = false; // Iniziativa flag
     let suggerimentiFlag = false; // Suggerimenti flag
     let mezzogiornoDiFuoco = false; // Mezzogiorno di fuoco flag
@@ -161,6 +161,14 @@
     const pressureAlert = document.getElementById('pressure-alert');
     const okButton = document.getElementById('ok-button');
 
+    // Inizializza valori al caricamento della pagina
+  document.addEventListener('DOMContentLoaded', () => {
+    // Imposta i valori iniziali dei contatori
+    document.getElementById('pressure-value').textContent = pressureValue;
+    document.getElementById('bullets-value').textContent = bulletsValue;
+    document.getElementById('turn-value').textContent = turnValue;
+  });
+
     pressureDecrease.addEventListener('click', () => {
       pressureValue = Math.max(0, pressureValue - 1);
       pressureDisplay.textContent = pressureValue;
@@ -170,7 +178,7 @@
       pressureValue = (pressureValue + 1) % 7; // Reset to 0 if greater than 6
       pressureDisplay.textContent = pressureValue;
 
-      if (pressureValue === 6) {
+      if (pressureValue === maxPressure) {
         // Show alert and reset pressure value
         pressureAlert.classList.remove('hidden');
         pressureValue = 0;
@@ -194,9 +202,7 @@
     });
 
     bulletsIncrease.addEventListener('click', () => {
-      if (bulletsValue < 6) {
-        bulletsValue += 1;
-      }
+      bulletsValue = Math.min(maxBullets, bulletsValue + 1); // Rispetta il limite massimo
       bulletsDisplay.textContent = bulletsValue;
     });
 
@@ -209,7 +215,7 @@
     const turnOkButton = document.getElementById('turn-ok-button');
 
     turnDecrease.addEventListener('click', () => {
-      turnValue = Math.max(0, turnValue - 1);
+      turnValue = Math.max(1, turnValue - 1);
       turnDisplay.textContent = turnValue;
       updateMezzogiornoLabel();
     });
