@@ -19,6 +19,12 @@
   <div class="absolute inset-x-0 text-center">
     <h1 class="text-xl">BANG! Showdown</h1>
   </div>
+  <button id="reset-button" class="text-white bg-gray-700 hover:bg-gray-800 p-3 rounded-full">
+    <svg xmlns="http://www.w3.org/2000/svg" class="reset-icon" height="24" viewBox="0 0 24 24" width="24" onclick="resetFunction()">
+      <path d="M0 0h24v24H0z" fill="none"/>
+      <path d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"/>
+    </svg>
+  </button>
 </header>
 
   
@@ -349,9 +355,36 @@ accumuloIncrease.addEventListener('click', () => {
       } else {
         bulletsValue = turnValue + accumuloValue; // Set bullets equal to turn
       }
+      bulletsDisplay.textContent = bulletsValue;
   updateDependentValues();
 });
 
+// Funzione per resettare tutti i valori
+function resetCounters() {
+  pressureValue = 0;
+  bulletsValue = 1;
+  turnValue = 1;
+  accumuloValue = 0;
+  mezzogiornoDiFuoco = false;
+  iniziativaFlag = false;
+
+  // Aggiorna i display
+  pressureDisplay.textContent = pressureValue;
+  bulletsDisplay.textContent = bulletsValue;
+  turnDisplay.textContent = turnValue;
+  accumuloDisplay.textContent = accumuloValue;
+
+  // Nascondi elementi visibili in stato modificato
+  document.getElementById('mezzogiorno-label').classList.add('hidden');
+
+  // Resetta lo stato del pulsante iniziativa
+  const iniziativaToggle = document.getElementById('iniziativa-toggle');
+  iniziativaToggle.classList.replace('bg-green-600', 'bg-red-600');
+  iniziativaToggle.classList.replace('hover:bg-green-700', 'hover:bg-red-700');
+}
+
+// Aggiungi il listener al pulsante Reset
+document.getElementById('reset-button').addEventListener('click', resetCounters);
 
   </script>
 </body>
