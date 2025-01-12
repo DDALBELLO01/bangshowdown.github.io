@@ -65,6 +65,16 @@
       <button id="iniziativa-toggle" class="mt-6 w-32 py-2 bg-red-600 text-xl rounded-full text-white font-bold hover:bg-red-700" aria-label="Toggle Iniziativa Flag">Iniziativa</button>
     </div>
 
+    <!-- Counter 4 -->
+    <div class="text-center">
+      <p class="text-lg mb-2">Accumulo</p>
+      <div class="flex items-center justify-center space-x-4">
+        <button id="accumulo-decrease" class="w-12 h-12 bg-blue-600 rounded-full text-2xl font-bold hover:bg-blue-700" aria-label="Decrease Accumulo">-</button>
+        <p id="accumulo-value" class="text-3xl">0</p>
+        <button id="accumulo-increase" class="w-12 h-12 bg-blue-600 rounded-full text-2xl font-bold hover:bg-blue-700" aria-label="Increase Accumulo">+</button>
+      </div>
+    </div>
+
     <!-- Pressure Alert Message -->
     <div id="pressure-alert" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
       <div class="bg-gray-800 p-6 rounded-lg text-white text-center">
@@ -130,10 +140,6 @@
         <label for="max-pressure" class="block text-lg">Massima Pressione</label>
         <input type="number" id="max-pressure" class="w-full p-2 rounded bg-gray-700 text-white" value="6" />
       </div>
-      <div>
-        <label for="max-bullets" class="block text-lg">Massime Pallottole</label>
-        <input type="number" id="max-bullets" class="w-full p-2 rounded bg-gray-700 text-white" value="6" />
-      </div>
     </div>
     <div class="flex justify-between mt-6">
       <button id="save-settings" class="px-6 py-2 bg-green-600 rounded-full text-white font-bold hover:bg-green-700">Salva</button>
@@ -153,6 +159,11 @@
     let iniziativaFlag = false; // Iniziativa flag
     let suggerimentiFlag = false; // Suggerimenti flag
     let mezzogiornoDiFuoco = false; // Mezzogiorno di fuoco flag
+    let accumuloValue = 0;
+    const accumuloDecrease = document.getElementById('accumulo-decrease');
+    const accumuloIncrease = document.getElementById('accumulo-increase');
+    const accumuloDisplay = document.getElementById('accumulo-value');
+
 
     // Pressione Counter
     const pressureDecrease = document.getElementById('pressure-decrease');
@@ -223,7 +234,7 @@
     turnIncrease.addEventListener('click', () => {
       turnValue += 1;
 
-      if (turnValue >= 7) {
+      if (turnValue + accumuloValue >= 7) {
         mezzogiornoDiFuoco = true;  // Mezzogiorno di Fuoco is active when Turno is 7 or more
       } else {
         mezzogiornoDiFuoco = false;
@@ -240,10 +251,10 @@
         }
       }
 
-      if (turnValue >= 6) {
+      if (turnValue + accumuloDecrease >= 6) {
         bulletsValue = 6; // Set bullets to max if turn is 6 or more
       } else {
-        bulletsValue = turnValue; // Set bullets equal to turn
+        bulletsValue = turnValue + accumuloDecrease; // Set bullets equal to turn
       }
 
       turnDisplay.textContent = turnValue;
@@ -296,7 +307,6 @@ const settingsModal = document.getElementById('settings-modal');
 const saveSettings = document.getElementById('save-settings');
 const cancelSettings = document.getElementById('cancel-settings');
 const maxPressureInput = document.getElementById('max-pressure');
-const maxBulletsInput = document.getElementById('max-bullets');
 
 // Valori configurabili
 let maxPressure = 6;
@@ -315,20 +325,26 @@ cancelSettings.addEventListener('click', () => {
 // Salva le impostazioni
 saveSettings.addEventListener('click', () => {
   maxPressure = parseInt(maxPressureInput.value, 10);
-  maxBullets = parseInt(maxBulletsInput.value, 10);
 
   // Aggiorna i limiti dei contatori se necessario
   if (pressureValue > maxPressure) {
     pressureValue = maxPressure;
     pressureDisplay.textContent = pressureValue;
   }
-  if (bulletsValue > maxBullets) {
-    bulletsValue = maxBullets;
-    bulletsDisplay.textContent = bulletsValue;
-  }
-
   // Chiudi il popup
   settingsModal.classList.add('hidden');
+});
+
+accumuloDecrease.addEventListener('click', () => {
+  accumuloValue = Math.max(0, accumuloValue - 1);
+  accumuloDisplay.textContent = accumuloValue;
+  updateDependentValues();
+});
+
+accumuloIncrease.addEventListener('click', () => {
+  accumuloValue += 1;
+  accumuloDisplay.textContent = accumuloValue;
+  updateDependentValues();
 });
 
 
