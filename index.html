@@ -185,16 +185,32 @@
     const okButton = document.getElementById('ok-button');
 
     // Inizializza valori al caricamento della pagina
-  document.addEventListener('DOMContentLoaded', () => {
-    // Imposta i valori iniziali dei contatori
-    document.getElementById('pressure-value').textContent = pressureValue;
-    document.getElementById('bullets-value').textContent = bulletsValue;
-    document.getElementById('turn-value').textContent = turnValue;
-  });
+    document.addEventListener('DOMContentLoaded', () => {
+  // Load saved values from localStorage
+  pressureValue = parseInt(localStorage.getItem('pressureValue')) || 0;
+  bulletsValue = parseInt(localStorage.getItem('bulletsValue')) || 1;
+  turnValue = parseInt(localStorage.getItem('turnValue')) || 1;
+  accumuloValue = parseInt(localStorage.getItem('accumuloValue')) || 0;
+
+  // Update the display
+  document.getElementById('pressure-value').textContent = pressureValue;
+  document.getElementById('bullets-value').textContent = bulletsValue;
+  document.getElementById('turn-value').textContent = turnValue;
+  document.getElementById('accumulo-value').textContent = accumuloValue;
+});
+
+function saveValues() {
+  // Save values to localStorage
+  localStorage.setItem('pressureValue', pressureValue);
+  localStorage.setItem('bulletsValue', bulletsValue);
+  localStorage.setItem('turnValue', turnValue);
+  localStorage.setItem('accumuloValue', accumuloValue);
+}
 
     pressureDecrease.addEventListener('click', () => {
       pressureValue = Math.max(0, pressureValue - 1);
       pressureDisplay.textContent = pressureValue;
+      saveValues();
     });
 
     pressureIncrease.addEventListener('click', () => {
@@ -207,6 +223,7 @@
         pressureValue = 0;
         pressureDisplay.textContent = pressureValue;
       }
+      saveValues();
     });
 
     // Handle OK button click to close the pressure alert
@@ -222,11 +239,13 @@
     bulletsDecrease.addEventListener('click', () => {
       bulletsValue = Math.max(0, bulletsValue - 1);
       bulletsDisplay.textContent = bulletsValue;
+      saveValues();
     });
 
     bulletsIncrease.addEventListener('click', () => {
       bulletsValue = Math.min(maxBullets, bulletsValue + 1); // Rispetta il limite massimo
       bulletsDisplay.textContent = bulletsValue;
+      saveValues();
     });
 
     // Turno Counter
@@ -241,6 +260,7 @@
       turnValue = Math.max(1, turnValue - 1);
       turnDisplay.textContent = turnValue;
       updateMezzogiornoLabel();
+      saveValues();
     });
 
     turnIncrease.addEventListener('click', () => {
@@ -277,6 +297,7 @@
       if (suggerimentiFlag) {
         turnActionsAlert.classList.remove('hidden');
       }
+      saveValues();
     });
 
       // Abilita Suggerimenti Checkbox
@@ -351,6 +372,7 @@ accumuloDecrease.addEventListener('click', () => {
   accumuloValue = Math.max(0, accumuloValue - 1);
   accumuloDisplay.textContent = accumuloValue;
   updateDependentValues();
+  saveValues();
 });
 
 accumuloIncrease.addEventListener('click', () => {
@@ -363,6 +385,7 @@ accumuloIncrease.addEventListener('click', () => {
       }
       bulletsDisplay.textContent = bulletsValue;
   updateDependentValues();
+  saveValues();
 });
 
 // Funzione per resettare tutti i valori
